@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 2 - Webシステム</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="row justify-content-center mt-3">
+    <div class="col-md-6">
+      <button class="btn btn-primary btn-block" onclick="goToIndex()">トップページに戻る</button>
+    </div>
+  </div>
+  <div class="container">
+    <h1 class="text-center mt-5 mb-4">ボスラッシュリスト</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <button class="btn btn-primary btn-block mb-3" onclick="updateList()">リスト更新</button>
+        <ul id="random-characters-list" class="list-group"></ul>
+      </div>
+    </div>
+    
+  </div>
+  <script src="script.js"></script>
+  <script>
+    function goToIndex() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webシステム</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center mt-5 mb-4">ボスラッシュシステム</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <button class="btn btn-primary btn-block mb-3" onclick="goToPage2()">ボスラッシュリスト</button>
+        <button class="btn btn-primary btn-block" onclick="goToPage3()">チームリスト</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function goToPage2() {
+        window.location.href = "page2.html";
+    }
+
+    function goToPage3() {
+        window.location.href = "page3.html";
+    }
+  </script>
+</body>
+</html>

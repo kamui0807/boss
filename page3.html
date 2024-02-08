@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 3 - Webシステム</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-8">
+          <button class="btn btn-primary btn-block" onclick="goToIndex()">トップページに戻る</button>
+        </div>
+      </div>
+  <div class="container">
+    <h1 class="text-center mt-5 mb-4">チーム作成</h1>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <h2>チーム数</h2>
+        <form id="team-form">
+          <div class="form-group">
+            <label for="num-teams">チーム数</label>
+            <select id="num-teams" class="form-control" onchange="updateTeamInputs()">
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div id="teams-container">
+            <!-- チームの入力欄はJavaScriptで追加 -->
+          </div>
+          <button type="button" class="btn btn-primary" onclick="generateTeams()">チームを作る</button>
+        </form>
+        <h2>Teams</h2>
+        <br>
+        <div id="random-teams"></div>
+      </div>
+    </div>
+    
+  </div>
+  <script src="team.js"></script>
+  <script>
+    function goToIndex() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
