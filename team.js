@@ -1,108 +1,90 @@
-// チーム生成関数
-function generateTeams() {
-    const teamForm = document.getElementById("team-form");
-    const numTeams = parseInt(teamForm.elements["num-teams"].value);
-    const randomTeamsDiv = document.getElementById("random-teams");
-    randomTeamsDiv.innerHTML = '';
+// チームに振り分ける関数
+function assignTeams() {
+    const teamCount = parseInt(document.getElementById("team-count").value);
+    const playerCount = parseInt(document.getElementById("player-count").value);
+    const names = [];
+    const teams = {};
 
-    for (let i = 1; i <= numTeams; i++) {
-        const teamDiv = document.createElement("div");
-        teamDiv.classList.add("team");
-        teamDiv.innerHTML = "<h3>" + (teamForm.elements["team-name" + i].value || "Team " + i) + "</h3>";
-
-        const numMembers = parseInt(teamForm.elements["num-members-team" + i].value);
-        const teamMembers = [];
-
-        for (let j = 1; j <= numMembers; j++) {
-            const memberInput = teamForm.elements["team" + i + "-member" + j];
-            teamMembers.push(memberInput.value);
+    // 入力された名前を取得
+    const inputAreas = document.querySelectorAll(".player-input");
+    inputAreas.forEach(input => {
+        const name = input.value.trim();
+        if (name !== "") {
+            names.push(name);
         }
+    });
 
-        const randomTeam = shuffleArray(teamMembers);
+    // チームを初期化
+    for (let i = 1; i <= teamCount; i++) {
+        teams["Team " + i] = [];
+    }
 
-        for (let j = 0; j < randomTeam.length; j++) {
-            const listItem = document.createElement("p");
-            listItem.textContent = "Member " + (j + 1) + ": " + randomTeam[j];
-            teamDiv.appendChild(listItem);
-        }
+    // チームにランダムに名前を振り分ける
+    let currentIndex = names.length, randomIndex;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
 
-        randomTeamsDiv.appendChild(teamDiv);
+        const temporaryValue = names[currentIndex];
+        names[currentIndex] = names[randomIndex];
+        names[randomIndex] = temporaryValue;
+    }
+
+    // チームに名前を振り分ける
+    let teamIndex = 0;
+    names.forEach(name => {
+        teams["Team " + (teamIndex + 1)].push(name);
+        teamIndex = (teamIndex + 1) % teamCount;
+    });
+
+    // チームを表示
+    const teamResults = document.getElementById("team-results");
+    teamResults.innerHTML = "";
+    for (const [team, players] of Object.entries(teams)) {
+        const card = document.createElement("div");
+        card.className = "card mb-3";
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+        const title = document.createElement("h5");
+        title.className = "card-title";
+        title.textContent = team;
+        const list = document.createElement("ul");
+        list.className = "list-unstyled";
+        players.forEach(player => {
+            const listItem = document.createElement("li");
+            listItem.textContent = player;
+            list.appendChild(listItem);
+        });
+        cardBody.appendChild(title);
+        cardBody.appendChild(list);
+        card.appendChild(cardBody);
+        teamResults.appendChild(card);
     }
 }
 
-// 入力欄を更新する関数
-function updateTeamInputs() {
-    const teamForm = document.getElementById("team-form");
-    const numTeams = parseInt(teamForm.elements["num-teams"].value);
-    const teamsContainer = document.getElementById("teams-container");
-    teamsContainer.innerHTML = '';
-
-    for (let i = 1; i <= numTeams; i++) {
-        const teamDiv = document.createElement("div");
-        teamDiv.classList.add("team");
-        teamDiv.innerHTML = "<h3>Team " + i + "</h3>";
-
-        const nameLabel = document.createElement("label");
-        nameLabel.textContent = "チーム名:";
-        const nameInput = document.createElement("input");
-        nameInput.type = "text";
-        nameInput.id = "team-name" + i;
-        nameInput.className = "form-control mb-2";
-
-        const label = document.createElement("label");
-        label.textContent = "チーム人数:";
-        const select = document.createElement("select");
-        select.id = "num-members-team" + i;
-        select.className = "form-control";
-        select.onchange = updateMemberInputs;
-        for (let j = 1; j <= 4; j++) {
-            const option = document.createElement("option");
-            option.value = j;
-            option.textContent = j;
-            select.appendChild(option);
-        }
-
-        teamDiv.appendChild(nameLabel);
-        teamDiv.appendChild(nameInput);
-        teamDiv.appendChild(label);
-        teamDiv.appendChild(select);
-
-        const memberInputsDiv = document.createElement("div");
-        memberInputsDiv.id = "team" + i + "-member-inputs";
-        teamDiv.appendChild(memberInputsDiv);
-
-        teamsContainer.appendChild(teamDiv);
-    }
+// チームをリセットする関数
+function resetTeams() {
+    document.getElementById("team-results").innerHTML = "";
 }
 
-// チームごとのメンバー数を更新する関数
-function updateMemberInputs(event) {
-    const select = event.target;
-    const teamNumber = select.id.replace("num-members-team", "");
-    const numMembers = parseInt(select.value);
-    const memberInputsDiv = document.getElementById("team" + teamNumber + "-member-inputs");
-    memberInputsDiv.innerHTML = '';
+// 入力枠の数を設定する関数
+function setPlayerInputs() {
+    const playerCount = parseInt(document.getElementById("player-count").value);
+    const inputAreas = document.getElementById("input-areas");
+    inputAreas.innerHTML = ""; // 一度リセット
 
-    for (let i = 1; i <= numMembers; i++) {
+    for (let i = 0; i < playerCount; i++) {
         const input = document.createElement("input");
         input.type = "text";
-        input.id = "team" + teamNumber + "-member" + i;
-        input.name = "team" + teamNumber + "-member" + i;
-        input.className = "form-control mb-2";
-        input.placeholder = "Member " + i;
-        input.required = true;
-        memberInputsDiv.appendChild(input);
+        input.className = "form-control player-input";
+        input.placeholder = "Player " + (i + 1);
+        inputAreas.appendChild(input);
+        inputAreas.appendChild(document.createElement("br"));
     }
 }
 
-// 配列をシャッフルする関数
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
+// セレクトボックスの変更時に入力枠を更新する
+document.getElementById("player-count").addEventListener("change", setPlayerInputs);
 
-// 初期状態で入力欄を生成
-updateTeamInputs();
+// 初期状態で入力枠を設定する
+setPlayerInputs();
