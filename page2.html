@@ -21,12 +21,25 @@
         <ul id="random-characters-list" class="list-group"></ul>
       </div>
     </div>
-    
   </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <button class="btn btn-primary btn-block mb-3" onclick="goToPage3()">チームを作る</button>
+<!-- 修正後追加 -->
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
   <script>
     function goToIndex() {
       window.location.href = "index.html";
+    }
+
+    function goToPage3() {
+        window.location.href = "page3.html";
     }
   </script>
 </body>
